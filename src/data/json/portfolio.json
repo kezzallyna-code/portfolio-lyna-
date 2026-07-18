@@ -1,0 +1,112 @@
+{
+  "about": {
+    "name": "Lyna Kezzal",
+    "role": "UI/UX Designer & Front-End Developer",
+    "subtitle": "About Me",
+    "description": "I am a Computer Science student from Algeria and an aspiring UI/UX Designer and Front-End Developer.\n\nI enjoy transforming ideas into intuitive digital products through thoughtful design and clean development.\n\nAlongside my university studies, I continuously improve my skills by building personal projects, creating Figma interfaces, coding responsive websites, and collaborating on agency work.\n\nI believe the best way to learn is by building real projects, challenging myself, and continuously improving every day.\n\nI am particularly interested in creating modern interfaces that combine usability, aesthetics, and performance.\n\nI expect to graduate with my Bachelor's degree in Computer Science in 2027.",
+    "imageUrl": "/profile-pic.png",
+    "location": "Algiers, Algeria",
+    "status": "Available for freelance"
+  },
+  "superpowers": {
+    "skills": [
+      {
+        "id": "ui-ux",
+        "title": "UI/UX Design",
+        "description": "Strategy, user flows, and prototyping to build engaging digital products and experiences.",
+        "icon": "vector-pen",
+        "category": "UI/UX"
+      },
+      {
+        "id": "frontend",
+        "title": "Front-End Dev",
+        "description": "Implementing designs using HTML, CSS, JavaScript, React, Next.js, and modern tools.",
+        "icon": "code",
+        "category": "Front-End"
+      },
+      {
+        "id": "motion",
+        "title": "Motion & Interaction",
+        "description": "Bringing interfaces to life with subtle and engaging micro-interactions using Framer Motion.",
+        "icon": "sparkles",
+        "category": "UI/UX"
+      }
+    ],
+    "software": [
+      { "name": "Figma", "icon": "figma" },
+      { "name": "VS Code", "icon": "vscode" },
+      { "name": "Webflow", "icon": "webflow" },
+      { "name": "Adobe XD", "icon": "adobexd" }
+    ]
+  },
+  "education": [
+    {
+      "id": "usthb-bachelor",
+      "degree": "Bachelor of Computer Science",
+      "institution": "University of Science and Technology Houari Boumediene (USTHB)",
+      "graduationYear": "2027",
+      "description": "Studying core software development concepts, programming languages, algorithms, data structures, and problem-solving methodologies."
+    }
+  ],
+  "languages": [
+    { "id": "ar", "name": "Arabic", "level": "Native" },
+    { "id": "en", "name": "English", "level": "C1" },
+    { "id": "fr", "name": "French", "level": "Fluent" },
+    { "id": "de", "name": "German", "level": "B2" },
+    { "id": "tr", "name": "Turkish", "level": "B2" }
+  ],
+  "projects": [],
+  "uiUxVideos": [],
+  "experience": [
+    {
+      "id": "dev-designer",
+      "role": "Software Developer & UI/UX Designer",
+      "company": "Freelance & Agency Collaborations",
+      "duration": "2025 - Present",
+      "startDate": "2025",
+      "isCurrent": true,
+      "description": "I work on personal, freelance, and collaborative agency projects, designing modern user interfaces and developing responsive web applications. My work includes UI/UX Design in Figma, Interactive Prototyping, Responsive Web Development, Front-End Development, Website Design, Design Systems, Landing Pages, Portfolio Websites, and Collaboration with a digital agency on client projects."
+    }
+  ],
+  "certifications": [
+    {
+      "id": "cert-1",
+      "title": "Coming Soon",
+      "organization": "TBD",
+      "date": "",
+      "status": "coming-soon",
+      "imageUrl": "/certs/placeholder.jpg"
+    },
+    {
+      "id": "cert-2",
+      "title": "Coming Soon",
+      "organization": "TBD",
+      "date": "",
+      "status": "coming-soon",
+      "imageUrl": "/certs/placeholder.jpg"
+    },
+    {
+      "id": "cert-3",
+      "title": "Coming Soon",
+      "organization": "TBD",
+      "date": "",
+      "status": "coming-soon",
+      "imageUrl": "/certs/placeholder.jpg"
+    },
+    {
+      "id": "cert-4",
+      "title": "Coming Soon",
+      "organization": "TBD",
+      "date": "",
+      "status": "coming-soon",
+      "imageUrl": "/certs/placeholder.jpg"
+    }
+  ],
+  "socials": {
+    "github": "https://github.com/lynakezzal",
+    "linkedin": "https://linkedin.com/in/lynakezzal",
+    "email": "lyna.kezzal@example.com",
+    "location": "Algiers, Algeria",
+    "resumeUrl": "/resume.pdf"
+  }
+}
