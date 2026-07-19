@@ -5,6 +5,7 @@ import { PortfolioData, UiUxVideo } from '@/data/schema';
 import { Button } from '@/components/admin/ui/Button';
 import { Input } from '@/components/admin/ui/Input';
 import { Save, Plus, Trash2, Play } from 'lucide-react';
+import { FileUpload } from '@/components/admin/ui/FileUpload';
 import styles from '../admin.module.css';
 
 export default function VideosEditor() {
@@ -105,15 +106,17 @@ export default function VideosEditor() {
                   value={video.description} 
                   onChange={e => updateVideo(index, 'description', e.target.value)} 
                 />
-                <Input 
+                <FileUpload 
                   label="Thumbnail URL"
                   value={video.thumbnail} 
-                  onChange={e => updateVideo(index, 'thumbnail', e.target.value)} 
+                  onChange={value => updateVideo(index, 'thumbnail', value)} 
+                  accept="image/*"
                 />
-                <Input 
-                  label="Video File URL (MP4/WebM)"
+                <FileUpload 
+                  label="Video File URL (MP4/WebM/MOV)"
                   value={video.mp4Url || ''} 
-                  onChange={e => updateVideo(index, 'mp4Url', e.target.value)} 
+                  onChange={value => updateVideo(index, 'mp4Url', value)} 
+                  accept="video/*"
                 />
                 <Input 
                   label="Figma Embed Link"

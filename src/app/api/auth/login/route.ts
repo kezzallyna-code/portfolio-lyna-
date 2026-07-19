@@ -14,8 +14,8 @@ export async function POST(req: Request) {
       
       response.cookies.set('aether_session', 'authenticated_user_session_token', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        secure: false, // Set to false to ensure it works on local IPs and http
+        sameSite: 'lax', // Relaxed to ensure redirects work reliably
         maxAge: 60 * 60 * 24 * 7, // 1 week
         path: '/',
       });

@@ -99,6 +99,11 @@ export interface UiUxVideo {
 export interface SocialLinks {
   github?: string;
   linkedin?: string;
+  twitter?: string;
+  instagram?: string;
+  dribbble?: string;
+  behance?: string;
+  youtube?: string;
   email?: string;
   location?: string;
   resumeUrl?: string;

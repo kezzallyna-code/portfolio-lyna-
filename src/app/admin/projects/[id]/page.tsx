@@ -8,6 +8,7 @@ import { Input } from '@/components/admin/ui/Input';
 import { Textarea } from '@/components/admin/ui/Textarea';
 import { Save, ArrowLeft, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import { FileUpload } from '@/components/admin/ui/FileUpload';
 import styles from '../../admin.module.css';
 
 export default function ProjectEditor() {
@@ -149,10 +150,11 @@ export default function ProjectEditor() {
                 <ImageIcon size={48} style={{ color: 'var(--text-secondary)', margin: '0 auto 1rem' }} />
               )}
             </div>
-            <Input 
+            <FileUpload 
               label="Thumbnail URL" 
               value={project.imageUrl} 
-              onChange={e => setProject({ ...project, imageUrl: e.target.value })} 
+              onChange={value => setProject({ ...project, imageUrl: value })} 
+              accept="image/*"
             />
           </div>
 

@@ -19,13 +19,18 @@ export default function Footer({ socials, name, role }: { socials: SocialLinks, 
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {socials.github && <li><a href={socials.github} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--text-secondary)' }}>GitHub</a></li>}
               {socials.linkedin && <li><a href={socials.linkedin} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--text-secondary)' }}>LinkedIn</a></li>}
+              {socials.twitter && <li><a href={socials.twitter} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--text-secondary)' }}>Twitter / X</a></li>}
+              {socials.instagram && <li><a href={socials.instagram} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--text-secondary)' }}>Instagram</a></li>}
+              {socials.dribbble && <li><a href={socials.dribbble} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--text-secondary)' }}>Dribbble</a></li>}
+              {socials.behance && <li><a href={socials.behance} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--text-secondary)' }}>Behance</a></li>}
+              {socials.youtube && <li><a href={socials.youtube} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--text-secondary)' }}>YouTube</a></li>}
             </ul>
           </div>
 
           <div>
             <h3 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '1.5rem' }}>Contact</h3>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {socials.email && <li><a href={`mailto:${socials.email}`} className="nav-link" style={{ color: 'var(--text-secondary)' }}>{socials.email}</a></li>}
+              {socials.email && <li><a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${socials.email}`} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--text-secondary)' }}>{socials.email}</a></li>}
               {socials.location && <li style={{ color: 'var(--text-secondary)' }}>{socials.location}</li>}
               {socials.resumeUrl && (
                 <li style={{ marginTop: '1rem' }}>

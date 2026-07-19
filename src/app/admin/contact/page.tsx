@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { PortfolioData } from '@/data/schema';
 import { Button } from '@/components/admin/ui/Button';
 import { Input } from '@/components/admin/ui/Input';
+import { FileUpload } from '@/components/admin/ui/FileUpload';
 import { Save } from 'lucide-react';
 import styles from '../admin.module.css';
 
@@ -57,11 +58,11 @@ export default function ContactEditor() {
             placeholder="e.g. Algiers, Algeria"
           />
 
-          <Input 
+          <FileUpload 
             label="Resume Download Link (PDF)" 
             value={data.socials.resumeUrl || ''} 
-            onChange={e => setData({ ...data, socials: { ...data.socials, resumeUrl: e.target.value } })} 
-            placeholder="/resume.pdf"
+            onChange={value => setData({ ...data, socials: { ...data.socials, resumeUrl: value } })} 
+            accept="application/pdf"
           />
         </div>
 
@@ -82,13 +83,40 @@ export default function ContactEditor() {
             placeholder="https://linkedin.com/in/yourusername"
           />
 
-          <div style={{ marginTop: '2rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Additional Networks</h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-              Add more fields to the JSON schema if you need to support Behance, Dribbble, Twitter, etc.
-            </p>
-            <Button variant="secondary" disabled>Add Network</Button>
-          </div>
+          <Input 
+            label="Twitter / X URL" 
+            value={data.socials.twitter || ''} 
+            onChange={e => setData({ ...data, socials: { ...data.socials, twitter: e.target.value } })} 
+            placeholder="https://twitter.com/yourusername"
+          />
+
+          <Input 
+            label="Instagram URL" 
+            value={data.socials.instagram || ''} 
+            onChange={e => setData({ ...data, socials: { ...data.socials, instagram: e.target.value } })} 
+            placeholder="https://instagram.com/yourusername"
+          />
+
+          <Input 
+            label="Dribbble URL" 
+            value={data.socials.dribbble || ''} 
+            onChange={e => setData({ ...data, socials: { ...data.socials, dribbble: e.target.value } })} 
+            placeholder="https://dribbble.com/yourusername"
+          />
+
+          <Input 
+            label="Behance URL" 
+            value={data.socials.behance || ''} 
+            onChange={e => setData({ ...data, socials: { ...data.socials, behance: e.target.value } })} 
+            placeholder="https://behance.net/yourusername"
+          />
+
+          <Input 
+            label="YouTube URL" 
+            value={data.socials.youtube || ''} 
+            onChange={e => setData({ ...data, socials: { ...data.socials, youtube: e.target.value } })} 
+            placeholder="https://youtube.com/@yourusername"
+          />
         </div>
       </div>
     </>

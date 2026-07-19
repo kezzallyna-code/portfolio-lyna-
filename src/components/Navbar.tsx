@@ -14,7 +14,7 @@ export default async function Navbar() {
         <a href="#experience" style={{ textDecoration: 'none', color: 'inherit' }}>Experience</a>
         <a href="#skills" style={{ textDecoration: 'none', color: 'inherit' }}>Skills</a>
         <a href="#education" style={{ textDecoration: 'none', color: 'inherit' }}>Education</a>
-        <a href={`mailto:${data.socials?.email || 'lyna.kezzal@example.com'}`} className="nav-link-admin" style={{ border: '1px solid var(--card-border)', padding: '0.5rem 1rem', borderRadius: '8px', color: 'var(--text-primary)', fontWeight: 600 }}>Contact</a>
+        <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${data.socials?.email || 'kezzellina@gmail.com'}`} target="_blank" rel="noopener noreferrer" className="nav-link-admin" style={{ border: '1px solid var(--card-border)', padding: '0.5rem 1rem', borderRadius: '8px', color: 'var(--text-primary)', fontWeight: 600 }}>Contact</a>
       </div>
     </nav>
   );

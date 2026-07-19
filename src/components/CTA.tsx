@@ -12,7 +12,7 @@ export default function CTA() {
             If you have a project in mind, let's start a conversation and see how I can help you.
           </p>
           <div className={styles.actions}>
-            <a href="mailto:lyna.kezzal@example.com" className={styles.primaryBtn}>Email Me</a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=kezzellina@gmail.com" className={styles.primaryBtn} target="_blank" rel="noopener noreferrer">Email Me</a>
             <Link href="#contact" className={styles.secondaryBtn}>Schedule a Call</Link>
           </div>
         </div>

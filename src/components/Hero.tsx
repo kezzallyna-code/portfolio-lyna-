@@ -14,7 +14,7 @@ export default function Hero({ data }: { data: AboutData }) {
             <p className={styles.description}>{data.description}</p>
             <div className={styles.actions}>
               <Link href="#projects" className={styles.primaryBtn}>Latest Work</Link>
-              <a href={`mailto:lyna.kezzal@example.com`} className={styles.secondaryBtn}>Let's Talk</a>
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=kezzellina@gmail.com" className={styles.secondaryBtn} target="_blank" rel="noopener noreferrer">Let's Talk</a>
             </div>
           </div>
           <div className={styles.imageWrapper}>
@@ -28,14 +28,7 @@ export default function Hero({ data }: { data: AboutData }) {
           </div>
         </div>
         
-        <div className={styles.bottomArea}>
-          <div className={styles.aboutHeader}>
-            <h2>About <span>Me</span></h2>
-          </div>
-          <div className={styles.statsGrid}>
-            {/* Stats removed as requested */}
-          </div>
-        </div>
+
       </div>
     </section>
   );

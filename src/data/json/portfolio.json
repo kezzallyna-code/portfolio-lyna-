@@ -33,10 +33,22 @@
       }
     ],
     "software": [
-      { "name": "Figma", "icon": "figma" },
-      { "name": "VS Code", "icon": "vscode" },
-      { "name": "Webflow", "icon": "webflow" },
-      { "name": "Adobe XD", "icon": "adobexd" }
+      {
+        "name": "Figma",
+        "icon": "figma"
+      },
+      {
+        "name": "VS Code",
+        "icon": "vscode"
+      },
+      {
+        "name": "Webflow",
+        "icon": "webflow"
+      },
+      {
+        "name": "Adobe XD",
+        "icon": "adobexd"
+      }
     ]
   },
   "education": [
@@ -49,11 +61,31 @@
     }
   ],
   "languages": [
-    { "id": "ar", "name": "Arabic", "level": "Native" },
-    { "id": "en", "name": "English", "level": "C1" },
-    { "id": "fr", "name": "French", "level": "Fluent" },
-    { "id": "de", "name": "German", "level": "B2" },
-    { "id": "tr", "name": "Turkish", "level": "B2" }
+    {
+      "id": "ar",
+      "name": "Arabic",
+      "level": "Native"
+    },
+    {
+      "id": "en",
+      "name": "English",
+      "level": "C1"
+    },
+    {
+      "id": "fr",
+      "name": "French",
+      "level": "Fluent"
+    },
+    {
+      "id": "de",
+      "name": "German",
+      "level": "B2"
+    },
+    {
+      "id": "tr",
+      "name": "Turkish",
+      "level": "B2"
+    }
   ],
   "projects": [],
   "uiUxVideos": [],
@@ -103,10 +135,10 @@
     }
   ],
   "socials": {
-    "github": "https://github.com/lynakezzal",
-    "linkedin": "https://linkedin.com/in/lynakezzal",
-    "email": "lyna.kezzal@example.com",
+    "github": "https://github.com/kezzallyna-code",
+    "linkedin": "https://www.linkedin.com/in/lina-kezzel-b39994335",
+    "email": "kezzellina@gmail.com",
     "location": "Algiers, Algeria",
-    "resumeUrl": "/resume.pdf"
+    "resumeUrl": "/uploads/1784489596527-CV_KEZZAL_Lyna_final.pdf"
   }
 }
