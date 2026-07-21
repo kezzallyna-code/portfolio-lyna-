@@ -81,7 +81,7 @@ export default function ProjectsList() {
                 </td>
                 <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
                   <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-                    <Link href={project.caseStudyUrl} target="_blank">
+                    <Link href={`/projects/${project.caseStudyUrl || project.id}`} target="_blank">
                       <Button variant="secondary" style={{ padding: '0.4rem', background: 'transparent', border: 'none' }}>
                         <ExternalLink size={18} />
                       </Button>

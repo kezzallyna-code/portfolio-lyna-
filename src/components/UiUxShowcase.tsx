@@ -16,9 +16,22 @@ export default function UiUxShowcase({ projects }: { projects: UiUxVideo[] }) {
             <div key={project.id} style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '24px', overflow: 'hidden' }}>
               <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', background: '#000' }}>
                  {/* Video / Thumbnail Placeholder */}
-                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
-                   {project.mp4Url ? 'MP4 Video Player Placeholder' : 'Figma Embed / Thumbnail Placeholder'}
-                 </div>
+                 {project.mp4Url ? (
+                   <video 
+                     src={project.mp4Url} 
+                     poster={project.thumbnail || ''}
+                     controls
+                     preload="none"
+                     style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} 
+                   />
+                 ) : project.thumbnail ? (
+                   // eslint-disable-next-line @next/next/no-img-element
+                   <img src={project.thumbnail} alt={project.title} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                 ) : (
+                   <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
+                     No Media
+                   </div>
+                 )}
               </div>
               
               <div style={{ padding: '3rem' }}>

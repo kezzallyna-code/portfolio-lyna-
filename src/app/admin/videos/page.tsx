@@ -91,6 +91,18 @@ export default function VideosEditor() {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <FileUpload 
+                  label="Video File URL (MP4/WebM/MOV)"
+                  value={video.mp4Url || ''} 
+                  onChange={value => updateVideo(index, 'mp4Url', value)} 
+                  accept="video/*"
+                />
+                <FileUpload 
+                  label="Thumbnail Image URL"
+                  value={video.thumbnail} 
+                  onChange={value => updateVideo(index, 'thumbnail', value)} 
+                  accept="image/*"
+                />
                 <Input 
                   label="Title"
                   value={video.title} 
@@ -105,18 +117,6 @@ export default function VideosEditor() {
                   label="Description"
                   value={video.description} 
                   onChange={e => updateVideo(index, 'description', e.target.value)} 
-                />
-                <FileUpload 
-                  label="Thumbnail URL"
-                  value={video.thumbnail} 
-                  onChange={value => updateVideo(index, 'thumbnail', value)} 
-                  accept="image/*"
-                />
-                <FileUpload 
-                  label="Video File URL (MP4/WebM/MOV)"
-                  value={video.mp4Url || ''} 
-                  onChange={value => updateVideo(index, 'mp4Url', value)} 
-                  accept="video/*"
                 />
                 <Input 
                   label="Figma Embed Link"

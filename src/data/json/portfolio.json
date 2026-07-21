@@ -87,8 +87,43 @@
       "level": "B2"
     }
   ],
-  "projects": [],
-  "uiUxVideos": [],
+  "projects": [
+    {
+      "id": "1784570492771",
+      "title": "Amanaa Invest",
+      "category": "FinTech",
+      "description": "Amanaa Invest is a modern investment platform concept designed to help users monitor portfolios, explore investment opportunities, and manage financial assets through a secure, intuitive, and data-driven dashboard.",
+      "imageUrl": "",
+      "caseStudyUrl": "amanaa-invest",
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Supabase",
+        "PostgreSQL",
+        "Framer Motion",
+        "Vercel"
+      ],
+      "challenges": "Designing a financial dashboard that presents complex investment data in a clear and accessible way while maintaining a clean, trustworthy interface. Another challenge was creating responsive layouts and reusable components that scale across different pa",
+      "finalSolution": "I designed and developed a responsive investment platform with a modern UI, intuitive navigation, interactive analytics, secure authentication, and a modular architecture. The project emphasizes usability, performance, and scalability while providing users with a seamless investment management experience.",
+      "gallery": [],
+      "figmaEmbed": "https://www.figma.com/design/IHrqI6vRFFqL0UJJsquhLT/amannaa?t=iAAH19kdhXrJaGFY-0",
+      "liveDemoUrl": "https://amanaa-three.vercel.app",
+      "githubUrl": "https://github.com/kezzallyna-code/amana1"
+    }
+  ],
+  "uiUxVideos": [
+    {
+      "id": "1784513035710",
+      "title": "New Video",
+      "category": "UI/UX",
+      "description": "",
+      "thumbnail": "",
+      "mp4Url": "/uploads/1784513065460-Untitled_-_Google_Chrome_2026-07-03_23-52-49.mp4",
+      "isPublished": true
+    }
+  ],
   "experience": [
     {
       "id": "dev-designer",

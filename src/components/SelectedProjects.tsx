@@ -25,7 +25,7 @@ export default function SelectedProjects({ projects }: { projects: Project[] }) 
                 <span className={styles.category}>{project.category}</span>
                 <h3 className={styles.projectTitle}>{project.title}</h3>
                 <p className={styles.projectDesc}>{project.description}</p>
-                <a href={project.caseStudyUrl} className={styles.caseStudyLink}>
+                <a href={`/projects/${project.caseStudyUrl || project.id}`} className={styles.caseStudyLink}>
                   View Case Study
                 </a>
               </div>

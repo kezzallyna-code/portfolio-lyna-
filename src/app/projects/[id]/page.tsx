@@ -2,9 +2,10 @@ import { getPortfolioData } from '@/data/repository';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
-export default async function CaseStudyPage({ params }: { params: { id: string } }) {
+export default async function CaseStudyPage({ params }: { params: Promise<{ id: string }> }) {
   const data = await getPortfolioData();
-  const project = data.projects.find(p => p.id === params.id);
+  const resolvedParams = await params;
+  const project = data.projects.find(p => p.id === resolvedParams.id || p.caseStudyUrl === resolvedParams.id);
 
   if (!project) {
     notFound();
