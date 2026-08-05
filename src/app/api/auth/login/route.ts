@@ -4,11 +4,14 @@ export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
     
-    // In a real application, you would compare hashes. 
-    // Since we want zero-config for the portfolio, we'll use a hardcoded fallback
-    // To make it secure, the user should change this value in their Vercel environment variables or .env.local
-    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@example.com';
-    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
+    // Check credentials strictly against environment variables
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+    if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+      console.error("Authentication environment variables are missing.");
+      return NextResponse.json({ error: 'System configuration error' }, { status: 500 });
+    }
 
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
       const response = NextResponse.json({ success: true });
