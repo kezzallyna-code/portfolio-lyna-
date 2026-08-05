@@ -115,12 +115,30 @@
   ],
   "uiUxVideos": [
     {
-      "id": "1784513035710",
-      "title": "New Video",
+      "id": "1785940622577",
+      "title": "oxycare video",
       "category": "UI/UX",
-      "description": "",
-      "thumbnail": "",
-      "mp4Url": "/uploads/1784513065460-Untitled_-_Google_Chrome_2026-07-03_23-52-49.mp4",
+      "description": "A smart fertility tracking concept that combines a wearable patch with a mobile application. The patch continuously collects physiological data, while the app analyzes the information to provide personalized insights into fertility, cycle predictions, and reproductive health, helping women better understand their bodies",
+      "thumbnail": "/uploads/1785940947423-Screenshot_(451).png",
+      "mp4Url": "/uploads/1785940643522-Untitled_-_Google_Chrome_2026-07-03_23-52-49_Trim.mp4",
+      "isPublished": true
+    },
+    {
+      "id": "1785940978355",
+      "title": "amana invest",
+      "category": "UI/UX",
+      "description": "A modern investment platform prototype designed to simplify financial management through an intuitive dashboard, portfolio tracking, and a clean, user-friendly interface. The project focuses on creating a seamless user experience while presenting complex financial data in a clear and accessible way.  OptiCurve",
+      "thumbnail": "/uploads/1785941026153-WhatsApp_Image_2026-06-06_at_3.02.34_PM_1.png",
+      "mp4Url": "/uploads/1785941013728-WhatsApp_Video_2026-07-04_at_00.13.19.mp4",
+      "isPublished": true
+    },
+    {
+      "id": "1785941110881",
+      "title": "eco system ",
+      "category": "UI/UX",
+      "description": "A smart environmental analysis application designed to evaluate soil conditions before construction. The app helps users determine whether a piece of land is suitable for building by analyzing soil quality and site data, supporting safer and more informed construction decisions.",
+      "thumbnail": "/uploads/1785941345390-AB6AXuBEVjvU3S7DcDCh7OsjgZELuo_dTKzhr6RJAG2rHuuB77KIwHkX4H57HyYnzHvXNopE84U-4pCUqf8g6HuBzxPwjrQnd0cBGzjwErmud1_7O_1MJ3fGV965t6OlORisH4DhN9r8h7Htf_65nxm-Iyrba78nsmZw6DxoO1n6qP4YHLyN2t4oeE2FKB3PDsc2W7xNJ5_qmal2C.png",
+      "mp4Url": "/uploads/1785941170623-ECOOOO_-_Google_Chrome_2026-07-04_00-08-27.mp4",
       "isPublished": true
     }
   ],
@@ -138,19 +156,19 @@
   "certifications": [
     {
       "id": "cert-1",
-      "title": "Coming Soon",
-      "organization": "TBD",
-      "date": "",
-      "status": "coming-soon",
-      "imageUrl": "/certs/placeholder.jpg"
+      "title": "Microsoft Learn – Azure Fundamentals",
+      "organization": "Microsoft",
+      "date": "Aug 2026",
+      "status": "completed",
+      "imageUrl": "/uploads/1785942381829-Achievements_-_lynakezzal-1706___Microsoft_Learnjjh.pdf"
     },
     {
       "id": "cert-2",
-      "title": "Coming Soon",
-      "organization": "TBD",
-      "date": "",
-      "status": "coming-soon",
-      "imageUrl": "/certs/placeholder.jpg"
+      "title": "Data Science & Analytics",
+      "organization": "hp life",
+      "date": "aug 2026",
+      "status": "completed ",
+      "imageUrl": "/uploads/1785943345397-Data_Science_&_Analytics.pdf"
     },
     {
       "id": "cert-3",
@@ -174,6 +192,6 @@
     "linkedin": "https://www.linkedin.com/in/lina-kezzel-b39994335",
     "email": "kezzellina@gmail.com",
     "location": "Algiers, Algeria",
-    "resumeUrl": "/uploads/1784489596527-CV_KEZZAL_Lyna_final.pdf"
+    "resumeUrl": "/uploads/1785942913618-Lyna_Kezzal_Resume.pdf"
   }
 }

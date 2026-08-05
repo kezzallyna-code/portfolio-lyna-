@@ -11,9 +11,13 @@ export default function ProjectsList() {
   const [data, setData] = useState<PortfolioData | null>(null);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    fetch('/api/portfolio', { cache: 'no-store' })
       .then(res => res.json())
-      .then(d => setData(d));
+      .then(d => setData(d))
+      .catch(err => {
+        console.error(err);
+        alert('Failed to load data.');
+      });
   }, []);
 
   const deleteProject = async (id: string) => {
@@ -23,13 +27,17 @@ export default function ProjectsList() {
     const newProjects = data.projects.filter(p => p.id !== id);
     const newData = { ...data, projects: newProjects };
     
-    await fetch('/api/portfolio', {
+    const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newData),
     });
     
-    setData(newData);
+    if (res.ok) {
+      setData(newData);
+    } else {
+      alert('Failed to delete project. Please try again.');
+    }
   };
 
   if (!data) return <div>Loading projects...</div>;
@@ -56,7 +64,7 @@ export default function ProjectsList() {
             </tr>
           </thead>
           <tbody>
-            {data.projects.map(project => (
+            {(data.projects || []).map(project => (
               <tr key={project.id} style={{ borderBottom: '1px solid var(--card-border)' }}>
                 <td style={{ padding: '1rem 1.5rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -98,7 +106,7 @@ export default function ProjectsList() {
                 </td>
               </tr>
             ))}
-            {data.projects.length === 0 && (
+            {(!data.projects || data.projects.length === 0) && (
               <tr>
                 <td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
                   No projects found. Create your first project to get started.

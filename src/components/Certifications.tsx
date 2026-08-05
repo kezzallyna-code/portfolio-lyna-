@@ -24,11 +24,18 @@ export default function Certifications({ certifications }: { certifications: Cer
                 ) : (
                   <span className={styles.date}>{cert.date}</span>
                 )}
-                {cert.verificationUrl && (
-                  <a href={cert.verificationUrl} target="_blank" rel="noopener noreferrer" className={styles.link}>
-                    View Credential
-                  </a>
-                )}
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  {(cert.imageUrl || cert.pdfUrl) && (
+                    <a href={cert.imageUrl || cert.pdfUrl} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                      View Certificate
+                    </a>
+                  )}
+                  {cert.verificationUrl && (
+                    <a href={cert.verificationUrl} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                      View Credential
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           ))}

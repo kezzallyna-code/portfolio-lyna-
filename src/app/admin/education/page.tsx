@@ -13,20 +13,28 @@ export default function EducationEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    fetch('/api/portfolio', { cache: 'no-store' })
       .then(res => res.json())
-      .then(d => setData(d));
+      .then(d => setData(d))
+      .catch(err => {
+        console.error(err);
+        alert('Failed to load data.');
+      });
   }, []);
 
   const handleSave = async () => {
     setSaving(true);
-    await fetch('/api/portfolio', {
+    const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
     setSaving(false);
-    alert('Education saved successfully!');
+    if (res.ok) {
+      alert('Education saved successfully!');
+    } else {
+      alert('Failed to save changes. Please try again.');
+    }
   };
 
   const addEducation = () => {
@@ -65,7 +73,7 @@ export default function EducationEditor() {
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {data.education.map((edu, index) => (
+          {(data.education || []).map((edu, index) => (
             <div key={edu.id} style={{ display: 'flex', gap: '1rem', background: 'rgba(0,0,0,0.1)', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--card-border)' }}>
               <div style={{ color: 'var(--text-secondary)', cursor: 'grab', display: 'flex', paddingTop: '0.75rem' }}>
                 <GripVertical size={20} />

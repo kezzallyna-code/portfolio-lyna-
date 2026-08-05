@@ -13,20 +13,28 @@ export default function SkillsEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    fetch('/api/portfolio', { cache: 'no-store' })
       .then(res => res.json())
-      .then(d => setData(d));
+      .then(d => setData(d))
+      .catch(err => {
+        console.error(err);
+        alert('Failed to load data.');
+      });
   }, []);
 
   const handleSave = async () => {
     setSaving(true);
-    await fetch('/api/portfolio', {
+    const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
     setSaving(false);
-    alert('Skills saved successfully!');
+    if (res.ok) {
+      alert('Skills saved successfully!');
+    } else {
+      alert('Failed to save changes. Please try again.');
+    }
   };
 
   const addSkill = () => {
@@ -86,7 +94,7 @@ export default function SkillsEditor() {
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {data.superpowers.skills.map((skill, index) => (
+            {(data.superpowers?.skills || []).map((skill, index) => (
               <div key={skill.id} style={{ display: 'flex', gap: '1rem', background: 'rgba(0,0,0,0.1)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--card-border)' }}>
                 <div style={{ color: 'var(--text-secondary)', cursor: 'grab', display: 'flex', alignItems: 'center' }}>
                   <GripVertical size={20} />
@@ -139,7 +147,7 @@ export default function SkillsEditor() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {data.superpowers.software.map((tool, index) => (
+            {(data.superpowers?.software || []).map((tool, index) => (
               <div key={index} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 <div style={{ color: 'var(--text-secondary)', cursor: 'grab' }}>
                   <GripVertical size={16} />

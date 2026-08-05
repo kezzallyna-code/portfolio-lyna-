@@ -22,7 +22,7 @@ export default function ProjectEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    fetch('/api/portfolio', { cache: 'no-store' })
       .then(res => res.json())
       .then(d => {
         setData(d);
@@ -59,15 +59,19 @@ export default function ProjectEditor() {
       newProjects[index] = project;
     }
 
-    await fetch('/api/portfolio', {
+    const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...data, projects: newProjects }),
     });
     
     setSaving(false);
-    alert('Project saved successfully!');
-    if (isNew) router.push(`/admin/projects/${project.id}`);
+    if (res.ok) {
+      alert('Project saved successfully!');
+      if (isNew) router.push(`/admin/projects/${project.id}`);
+    } else {
+      alert('Failed to save project. Please try again.');
+    }
   };
 
   if (!project) return <div>Loading project...</div>;

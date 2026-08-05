@@ -44,9 +44,9 @@ export function FileUpload({ label, value, onChange, accept, placeholder }: File
       }
 
       onChange(data.url);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err.message || 'An error occurred during upload');
+      setError(err instanceof Error ? err.message : 'An error occurred during upload');
     } finally {
       setUploading(false);
     }

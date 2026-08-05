@@ -12,20 +12,28 @@ export default function LanguagesEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    fetch('/api/portfolio', { cache: 'no-store' })
       .then(res => res.json())
-      .then(d => setData(d));
+      .then(d => setData(d))
+      .catch(err => {
+        console.error(err);
+        alert('Failed to load data.');
+      });
   }, []);
 
   const handleSave = async () => {
     setSaving(true);
-    await fetch('/api/portfolio', {
+    const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
     setSaving(false);
-    alert('Languages saved successfully!');
+    if (res.ok) {
+      alert('Languages saved successfully!');
+    } else {
+      alert('Failed to save changes. Please try again.');
+    }
   };
 
   const addLanguage = () => {
@@ -64,7 +72,7 @@ export default function LanguagesEditor() {
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          {data.languages.map((lang, index) => (
+          {(data.languages || []).map((lang, index) => (
             <div key={lang.id} style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: 'rgba(0,0,0,0.1)', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--card-border)' }}>
               <div style={{ color: 'var(--text-secondary)', cursor: 'grab', display: 'flex' }}>
                 <GripVertical size={16} />

@@ -12,20 +12,28 @@ export default function ResumeEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    fetch('/api/portfolio', { cache: 'no-store' })
       .then(res => res.json())
-      .then(d => setData(d));
+      .then(d => setData(d))
+      .catch(err => {
+        console.error(err);
+        alert('Failed to load data.');
+      });
   }, []);
 
   const handleSave = async () => {
     setSaving(true);
-    await fetch('/api/portfolio', {
+    const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
     setSaving(false);
-    alert('Resume settings saved successfully!');
+    if (res.ok) {
+      alert('Resume settings saved successfully!');
+    } else {
+      alert('Failed to save changes. Please try again.');
+    }
   };
 
   if (!data) return <div>Loading editor...</div>;
@@ -48,7 +56,7 @@ export default function ResumeEditor() {
           placeholder="https://example.com/lyna-kezzal-resume.pdf"
         />
         <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '1rem' }}>
-          This link will be used when visitors click the "Download Resume" button on your portfolio.
+          This link will be used when visitors click the &quot;Download Resume&quot; button on your portfolio.
         </p>
       </div>
     </>

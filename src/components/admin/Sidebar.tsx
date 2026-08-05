@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, Home, FolderKanban, PenTool, 
   Video, Award, Lightbulb, Briefcase, GraduationCap, 
   Languages, FileText, Image as ImageIcon, BookOpen, 
-  Mail, Search, BarChart2, Settings, LogOut 
+  Mail, Search, BarChart2, Settings 
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -48,12 +48,6 @@ const sections = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    router.push('/admin/login');
-  };
 
   return (
     <aside className={styles.sidebar}>
@@ -89,10 +83,6 @@ export default function Sidebar() {
           <Home size={18} />
           View Live Site
         </Link>
-        <button onClick={handleLogout} className={styles.link} style={{ width: '100%', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left' }}>
-          <LogOut size={18} />
-          Sign Out
-        </button>
       </div>
     </aside>
   );

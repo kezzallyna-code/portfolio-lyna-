@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/components/ThemeEngine';
 import Navbar from '@/components/Navbar';
+import ConditionalNavbar from '@/components/ConditionalNavbar';
 
 export const metadata: Metadata = {
   title: 'Lyna kezzal - UI/UX Designer & Front-End Developer',
@@ -22,7 +23,9 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>
-          <Navbar />
+          <ConditionalNavbar>
+            <Navbar />
+          </ConditionalNavbar>
           {children}
         </ThemeProvider>
       </body>

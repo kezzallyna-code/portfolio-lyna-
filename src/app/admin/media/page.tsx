@@ -5,8 +5,16 @@ import { Button } from '@/components/admin/ui/Button';
 import { UploadCloud, Folder, File, Image as ImageIcon, Trash2, Search, Filter } from 'lucide-react';
 import styles from '../admin.module.css';
 
+interface MediaFile {
+  id: string;
+  name: string;
+  type: 'image' | 'document' | 'video';
+  size: string;
+  date: string;
+}
+
 export default function MediaLibrary() {
-  const [files] = useState<any[]>([]);
+  const [files] = useState<MediaFile[]>([]);
 
   return (
     <>

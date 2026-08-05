@@ -6,10 +6,9 @@ export default function CTA() {
     <section className="section">
       <div className="container">
         <div className={styles.ctaBox}>
-          <h2 className={styles.title}>Let's Build Something<br /><span>Amazing Together.</span></h2>
-          <p className={styles.subtitle}>
-            Currently open for freelance projects and full-time opportunities.
-            If you have a project in mind, let's start a conversation and see how I can help you.
+          <h2 className={styles.title}>Let&apos;s build something amazing together</h2>
+          <p className={styles.description}>
+            Whether you have a specific project in mind or just want to chat about design and development, I&apos;d love to hear from you.
           </p>
           <div className={styles.actions}>
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=kezzellina@gmail.com" className={styles.primaryBtn} target="_blank" rel="noopener noreferrer">Email Me</a>

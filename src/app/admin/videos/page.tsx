@@ -13,20 +13,28 @@ export default function VideosEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    fetch('/api/portfolio', { cache: 'no-store' })
       .then(res => res.json())
-      .then(d => setData(d));
+      .then(d => setData(d))
+      .catch(err => {
+        console.error(err);
+        alert('Failed to load data.');
+      });
   }, []);
 
   const handleSave = async () => {
     setSaving(true);
-    await fetch('/api/portfolio', {
+    const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
     setSaving(false);
-    alert('Videos saved successfully!');
+    if (res.ok) {
+      alert('Videos saved successfully!');
+    } else {
+      alert('Failed to save changes. Please try again.');
+    }
   };
 
   const addVideo = () => {
@@ -48,7 +56,7 @@ export default function VideosEditor() {
     setData({ ...data, uiUxVideos: (data.uiUxVideos || []).filter(v => v.id !== id) });
   };
 
-  const updateVideo = (index: number, field: keyof UiUxVideo, value: any) => {
+  const updateVideo = (index: number, field: keyof UiUxVideo, value: string | boolean) => {
     if (!data) return;
     const newVids = [...(data.uiUxVideos || [])];
     newVids[index] = { ...newVids[index], [field]: value };

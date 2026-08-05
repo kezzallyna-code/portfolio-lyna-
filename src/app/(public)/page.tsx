@@ -10,6 +10,8 @@ import UiUxShowcase from '@/components/UiUxShowcase';
 import CTA from '@/components/CTA';
 import Footer from '@/components/Footer';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const data = await getPortfolioData();
 

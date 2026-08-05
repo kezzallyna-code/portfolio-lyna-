@@ -13,20 +13,28 @@ export default function ExperienceEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    fetch('/api/portfolio', { cache: 'no-store' })
       .then(res => res.json())
-      .then(d => setData(d));
+      .then(d => setData(d))
+      .catch(err => {
+        console.error(err);
+        alert('Failed to load data.');
+      });
   }, []);
 
   const handleSave = async () => {
     setSaving(true);
-    await fetch('/api/portfolio', {
+    const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
     setSaving(false);
-    alert('Experience saved successfully!');
+    if (res.ok) {
+      alert('Experience saved successfully!');
+    } else {
+      alert('Failed to save changes. Please try again.');
+    }
   };
 
   const addExperience = () => {
@@ -65,7 +73,7 @@ export default function ExperienceEditor() {
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {data.experience.map((exp, index) => (
+          {(data.experience || []).map((exp, index) => (
             <div key={exp.id} style={{ display: 'flex', gap: '1rem', background: 'rgba(0,0,0,0.1)', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--card-border)' }}>
               <div style={{ color: 'var(--text-secondary)', cursor: 'grab', display: 'flex', paddingTop: '0.75rem' }}>
                 <GripVertical size={20} />
@@ -101,7 +109,7 @@ export default function ExperienceEditor() {
                   <input 
                     type="checkbox" 
                     checked={!!exp.isCurrent} 
-                    onChange={e => updateExperience(index, 'isCurrent', e.target.checked as any)} 
+                    onChange={e => updateExperience(index, 'isCurrent', e.target.checked as unknown as string)} 
                   />
                   <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Current Position</label>
                 </div>

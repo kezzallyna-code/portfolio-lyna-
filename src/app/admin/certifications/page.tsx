@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { PortfolioData, Certification } from '@/data/schema';
 import { Button } from '@/components/admin/ui/Button';
 import { Input } from '@/components/admin/ui/Input';
+import { FileUpload } from '@/components/admin/ui/FileUpload';
 import { Save, Plus, Trash2, GripVertical } from 'lucide-react';
 import styles from '../admin.module.css';
 
@@ -12,20 +13,28 @@ export default function CertificationsEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch('/api/portfolio')
+    fetch('/api/portfolio', { cache: 'no-store' })
       .then(res => res.json())
-      .then(d => setData(d));
+      .then(d => setData(d))
+      .catch(err => {
+        console.error(err);
+        alert('Failed to load data.');
+      });
   }, []);
 
   const handleSave = async () => {
     setSaving(true);
-    await fetch('/api/portfolio', {
+    const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
     setSaving(false);
-    alert('Certifications saved successfully!');
+    if (res.ok) {
+      alert('Certifications saved successfully!');
+    } else {
+      alert('Failed to save changes. Please try again.');
+    }
   };
 
   const addCert = () => {
@@ -95,10 +104,12 @@ export default function CertificationsEditor() {
                   value={cert.status || ''} 
                   onChange={e => updateCert(index, 'status', e.target.value)} 
                 />
-                <Input 
+                <FileUpload 
                   label="PDF URL or Image URL"
                   value={cert.pdfUrl || cert.imageUrl || ''} 
-                  onChange={e => updateCert(index, 'imageUrl', e.target.value)} 
+                  onChange={value => updateCert(index, 'imageUrl', value)} 
+                  accept=".pdf,image/*"
+                  placeholder="/certs/placeholder.jpg or upload"
                 />
               </div>
               <div style={{ display: 'flex' }}>

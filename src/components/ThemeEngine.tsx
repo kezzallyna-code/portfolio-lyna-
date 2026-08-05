@@ -16,11 +16,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, react-hooks/exhaustive-deps, react-hooks/rules-of-hooks
+    const init = () => {
+      const savedTheme = localStorage.getItem('theme') as Theme;
+      if (savedTheme) {
+        setTheme(savedTheme);
+      }
+      setMounted(true);
+    };
+    init();
   }, []);
 
   useEffect(() => {
