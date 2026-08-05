@@ -8,6 +8,7 @@ import { Input } from '@/components/admin/ui/Input';
 import { Lock } from 'lucide-react';
 
 export default function AdminLogin() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,13 +23,13 @@ export default function AdminLogin() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (res.ok) {
         window.location.href = '/admin';
       } else {
-        setError('Invalid password');
+        setError('Invalid email or password');
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
@@ -62,9 +63,17 @@ export default function AdminLogin() {
           <Lock size={28} />
         </div>
         <h1 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontWeight: 600 }}>Aether CMS Login</h1>
-        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem', marginBottom: '2rem' }}>Enter the master password to continue</p>
+        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem', marginBottom: '2rem' }}>Sign in to manage your portfolio</p>
         
-        <form onSubmit={handleLogin} style={{ textAlign: 'left' }}>
+        <form onSubmit={handleLogin} style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <Input 
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoFocus
+          />
           <Input 
             type="password"
             placeholder="Password"
@@ -72,9 +81,8 @@ export default function AdminLogin() {
             onChange={(e) => setPassword(e.target.value)}
             error={error}
             required
-            autoFocus
           />
-          <Button type="submit" isLoading={loading} style={{ width: '100%', marginTop: '1rem', justifyContent: 'center' }}>
+          <Button type="submit" isLoading={loading} style={{ width: '100%', marginTop: '0.5rem', justifyContent: 'center' }}>
             Sign In
           </Button>
         </form>

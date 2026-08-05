@@ -5,13 +5,22 @@ export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   const isLoginRoute = path === '/admin/login';
+  
+  // Skip middleware for API routes and static files
+  if (path.startsWith('/api') || path.includes('.')) {
+    return NextResponse.next();
+  }
 
-  // If anyone tries to access the login page, redirect to admin dashboard since password protection is removed
-  if (isLoginRoute) {
+  const session = request.cookies.get('aether_session')?.value;
+
+  if (path.startsWith('/admin') && !isLoginRoute && !session) {
+    return NextResponse.redirect(new URL('/admin/login', request.url));
+  }
+
+  if (isLoginRoute && session) {
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 
-  // All other routes are allowed
   return NextResponse.next();
 }
 
