@@ -1,16 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { PortfolioData, UiUxVideo } from '@/data/schema';
 import { Button } from '@/components/admin/ui/Button';
 import { Input } from '@/components/admin/ui/Input';
-import { Save, Plus, Trash2, Play } from 'lucide-react';
+import { Save, Plus, Trash2, Play, UploadCloud } from 'lucide-react';
 import { FileUpload } from '@/components/admin/ui/FileUpload';
 import styles from '../admin.module.css';
+import { supabase } from '@/data/supabaseClient';
 
 export default function VideosEditor() {
   const [data, setData] = useState<PortfolioData | null>(null);
   const [saving, setSaving] = useState(false);
+  
+  // Bulk upload state
+  const [bulkUploading, setBulkUploading] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState('');
+  const bulkInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetch('/api/portfolio', { cache: 'no-store' })
@@ -48,7 +54,7 @@ export default function VideosEditor() {
       mp4Url: '', 
       isPublished: false
     };
-    setData({ ...data, uiUxVideos: [...(data.uiUxVideos || []), newVideo] });
+    setData({ ...data, uiUxVideos: [newVideo, ...(data.uiUxVideos || [])] });
   };
 
   const removeVideo = (id: string) => {
@@ -63,6 +69,60 @@ export default function VideosEditor() {
     setData({ ...data, uiUxVideos: newVids });
   };
 
+  const handleBulkUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0 || !data) return;
+
+    setBulkUploading(true);
+    const newVideos: UiUxVideo[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      setBulkProgress(`Uploading ${i + 1} of ${files.length}... (${file.name})`);
+      
+      try {
+        const filename = `${Date.now()}-${file.name.replaceAll(' ', '_')}`;
+        const { error: uploadError } = await supabase
+          .storage
+          .from('portfolio-media')
+          .upload(filename, file, { cacheControl: '3600', upsert: false });
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase
+          .storage
+          .from('portfolio-media')
+          .getPublicUrl(filename);
+
+        // Create a new video entry for this file
+        newVideos.push({
+          id: `${Date.now()}-${i}`,
+          title: file.name.split('.')[0] || 'New Video',
+          category: 'UI/UX',
+          description: '',
+          thumbnail: '',
+          mp4Url: publicUrl,
+          isPublished: false
+        });
+      } catch (err) {
+        console.error('Failed to upload', file.name, err);
+        alert(`Failed to upload ${file.name}`);
+      }
+    }
+
+    // Prepend new videos to the list
+    setData(prev => {
+      if (!prev) return prev;
+      return { ...prev, uiUxVideos: [...newVideos, ...(prev.uiUxVideos || [])] };
+    });
+    
+    setBulkUploading(false);
+    setBulkProgress('');
+    
+    // Reset file input
+    if (bulkInputRef.current) bulkInputRef.current.value = '';
+  };
+
   if (!data) return <div>Loading editor...</div>;
 
   return (
@@ -75,9 +135,30 @@ export default function VideosEditor() {
       </div>
 
       <div className={styles.card}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
           <h2 style={{ fontSize: '1.25rem' }}>Showcase Videos</h2>
-          <Button variant="secondary" onClick={addVideo}><Plus size={16} /> Add Video</Button>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <input 
+              type="file" 
+              multiple 
+              accept="video/*" 
+              ref={bulkInputRef} 
+              style={{ display: 'none' }} 
+              onChange={handleBulkUpload} 
+            />
+            <Button 
+              variant="secondary" 
+              onClick={() => bulkInputRef.current?.click()}
+              disabled={bulkUploading}
+              style={{ background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1', border: '1px solid rgba(99, 102, 241, 0.2)' }}
+            >
+              <UploadCloud size={16} /> 
+              {bulkUploading ? bulkProgress : 'Bulk Upload Videos'}
+            </Button>
+            <Button variant="secondary" onClick={addVideo} disabled={bulkUploading}>
+              <Plus size={16} /> Add Empty Video
+            </Button>
+          </div>
         </div>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
