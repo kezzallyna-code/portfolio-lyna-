@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styles from '@/app/admin/admin.module.css';
 import { UploadCloud, CheckCircle, AlertCircle, X } from 'lucide-react';
+import { supabase } from '@/data/supabaseClient';
 
 interface FileUploadProps {
   label?: string;
@@ -22,31 +23,30 @@ export function FileUpload({ label, value, onChange, accept, placeholder }: File
     setUploading(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.append('file', file);
-
     try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const filename = `${Date.now()}-${file.name.replaceAll(' ', '_')}`;
+      
+      const { data, error: uploadError } = await supabase
+        .storage
+        .from('portfolio-media')
+        .upload(filename, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-      let data;
-      try {
-        data = await res.json();
-      } catch (e) {
-        // If response is not JSON (e.g. 413 Payload Too Large html page)
-        throw new Error(res.status === 413 ? 'File is too large' : 'Upload failed (Server error)');
+      if (uploadError) {
+        throw new Error(uploadError.message || 'Upload to Supabase failed');
       }
 
-      if (!res.ok) {
-        throw new Error(data?.error || 'Upload failed');
-      }
+      const { data: { publicUrl } } = supabase
+        .storage
+        .from('portfolio-media')
+        .getPublicUrl(filename);
 
-      onChange(data.url);
-    } catch (err: unknown) {
+      onChange(publicUrl);
+    } catch (err: any) {
       console.error(err);
-      setError(err instanceof Error ? err.message : 'An error occurred during upload');
+      setError(err.message || 'An error occurred during upload');
     } finally {
       setUploading(false);
     }
