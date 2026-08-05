@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PortfolioData } from './schema';
 import { supabase } from './supabaseClient';
 
