@@ -178,16 +178,11 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
   if (data.superpowers?.software) {
     const software = data.superpowers.software;
     
-    // Delete first
-    const incomingNames = software.map(s => s.name);
-    const { data: existing } = await supabase.from('portfolio_software_tools').select('name');
-    const namesToDelete = existing?.map(s => s.name).filter(name => !incomingNames.includes(name)) || [];
-    if (namesToDelete.length > 0) {
-      await supabase.from('portfolio_software_tools').delete().in('name', namesToDelete);
-    }
+    // Delete all existing software tools first to avoid duplicates
+    await supabase.from('portfolio_software_tools').delete().neq('name', 'non_existent_dummy');
 
-    // software tools use 'name' as unique identifier in our logic
-    const { error } = await supabase.from('portfolio_software_tools').upsert(software.map(tool => ({
+    // Insert the updated tools
+    const { error } = await supabase.from('portfolio_software_tools').insert(software.map(tool => ({
       name: tool.name,
       icon: tool.icon
     })));

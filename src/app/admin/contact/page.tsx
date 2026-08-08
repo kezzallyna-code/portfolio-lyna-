@@ -32,6 +32,7 @@ export default function ContactEditor() {
     setSaving(false);
     if (res.ok) {
       alert('Contact info saved successfully!');
+      window.location.reload();
     } else {
       alert('Failed to save changes. Please try again.');
     }

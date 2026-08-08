@@ -31,6 +31,7 @@ export default function ResumeEditor() {
     setSaving(false);
     if (res.ok) {
       alert('Resume settings saved successfully!');
+      window.location.reload();
     } else {
       alert('Failed to save changes. Please try again.');
     }

@@ -38,6 +38,7 @@ export default function VideosEditor() {
     setSaving(false);
     if (res.ok) {
       alert('Videos saved successfully!');
+      window.location.reload();
     } else {
       alert('Failed to save changes. Please try again.');
     }

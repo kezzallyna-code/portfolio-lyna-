@@ -32,6 +32,7 @@ export default function EducationEditor() {
     setSaving(false);
     if (res.ok) {
       alert('Education saved successfully!');
+      window.location.reload();
     } else {
       alert('Failed to save changes. Please try again.');
     }

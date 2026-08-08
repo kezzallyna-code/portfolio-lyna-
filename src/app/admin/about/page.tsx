@@ -31,6 +31,7 @@ export default function AboutEditor() {
     setSaving(false);
     if (res.ok) {
       alert('About information saved successfully!');
+      window.location.reload();
     } else {
       alert('Failed to save changes. Please try again.');
     }

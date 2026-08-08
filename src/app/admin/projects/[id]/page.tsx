@@ -68,6 +68,7 @@ export default function ProjectEditor() {
     setSaving(false);
     if (res.ok) {
       alert('Project saved successfully!');
+      window.location.reload();
       if (isNew) router.push(`/admin/projects/${project.id}`);
     } else {
       alert('Failed to save project. Please try again.');

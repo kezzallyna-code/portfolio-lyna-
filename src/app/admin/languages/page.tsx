@@ -31,6 +31,7 @@ export default function LanguagesEditor() {
     setSaving(false);
     if (res.ok) {
       alert('Languages saved successfully!');
+      window.location.reload();
     } else {
       alert('Failed to save changes. Please try again.');
     }

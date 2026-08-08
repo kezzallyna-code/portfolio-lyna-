@@ -32,6 +32,7 @@ export default function ExperienceEditor() {
     setSaving(false);
     if (res.ok) {
       alert('Experience saved successfully!');
+      window.location.reload();
     } else {
       alert('Failed to save changes. Please try again.');
     }

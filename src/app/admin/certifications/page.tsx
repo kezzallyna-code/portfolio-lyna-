@@ -32,6 +32,7 @@ export default function CertificationsEditor() {
     setSaving(false);
     if (res.ok) {
       alert('Certifications saved successfully!');
+      window.location.reload();
     } else {
       alert('Failed to save changes. Please try again.');
     }

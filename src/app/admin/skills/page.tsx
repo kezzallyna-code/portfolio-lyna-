@@ -32,6 +32,7 @@ export default function SkillsEditor() {
     setSaving(false);
     if (res.ok) {
       alert('Skills saved successfully!');
+      window.location.reload();
     } else {
       alert('Failed to save changes. Please try again.');
     }
