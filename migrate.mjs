@@ -2,8 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://gvjtichpngfedloawqkf.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2anRpY2hwbmdmZWRsb2F3cWtmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODc4MzQsImV4cCI6MjEwMDc2MzgzNH0.BOKK7FGZ1EGbVZEDXIqtZD-BlT5qiaAeXD0GP9ZyL2c';
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error("Missing Supabase environment variables.");
+  process.exit(1);
+}
+
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function migrate() {

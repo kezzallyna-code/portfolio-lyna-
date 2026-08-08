@@ -1,0 +1,20 @@
+import 'server-only';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+export const supabaseAdmin = createClient(supabaseUrl || 'https://dummy.supabase.co', supabaseServiceRoleKey || 'dummy', {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  },
+  global: {
+    fetch: (...args) => {
+      if (!supabaseServiceRoleKey) {
+        throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set. This is required for secure administrative operations.');
+      }
+      return fetch(...args);
+    }
+  }
+});

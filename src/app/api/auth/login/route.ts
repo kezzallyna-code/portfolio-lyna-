@@ -1,10 +1,23 @@
 import { NextResponse } from 'next/server';
+import { signToken } from '@/lib/auth';
+import { z } from 'zod';
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});
 
 export async function POST(req: Request) {
   try {
-    const { email, password } = await req.json();
+    const body = await req.json();
+    const result = loginSchema.safeParse(body);
+
+    if (!result.success) {
+      return NextResponse.json({ error: 'Invalid input parameters' }, { status: 400 });
+    }
+
+    const { email, password } = result.data;
     
-    // Check credentials strictly against environment variables
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
     const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
@@ -14,12 +27,15 @@ export async function POST(req: Request) {
     }
 
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      // Create a JWT token
+      const token = await signToken({ email });
+
       const response = NextResponse.json({ success: true });
       
-      response.cookies.set('aether_session', 'authenticated_user_session_token', {
+      response.cookies.set('aether_session', token, {
         httpOnly: true,
-        secure: false, // Set to false to ensure it works on local IPs and http
-        sameSite: 'lax', // Relaxed to ensure redirects work reliably
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         maxAge: 60 * 60 * 24 * 7, // 1 week
         path: '/',
       });
@@ -29,6 +45,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
   } catch (error) {
+    console.error("Login error:", error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

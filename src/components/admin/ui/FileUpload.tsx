@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styles from '@/app/admin/admin.module.css';
 import { UploadCloud, CheckCircle, AlertCircle, X } from 'lucide-react';
-import { supabase } from '@/data/supabaseClient';
 
 interface FileUploadProps {
   label?: string;
@@ -20,30 +19,38 @@ export function FileUpload({ label, value, onChange, accept, placeholder }: File
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate file type
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
+    const validVideoTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
+    const isValid = accept === 'image/*' ? validImageTypes.includes(file.type) : 
+                    accept === 'video/*' ? validVideoTypes.includes(file.type) :
+                    validImageTypes.includes(file.type) || validVideoTypes.includes(file.type);
+    
+    if (!isValid) {
+      setError('Invalid file type. Only standard images and videos are allowed.');
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
     setUploading(true);
     setError(null);
 
     try {
-      const filename = `${Date.now()}-${file.name.replaceAll(' ', '_')}`;
+      const formData = new FormData();
+      formData.append('file', file);
       
-      const { data, error: uploadError } = await supabase
-        .storage
-        .from('portfolio-media')
-        .upload(filename, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
 
-      if (uploadError) {
-        throw new Error(uploadError.message || 'Upload to Supabase failed');
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || 'Upload failed');
       }
 
-      const { data: { publicUrl } } = supabase
-        .storage
-        .from('portfolio-media')
-        .getPublicUrl(filename);
-
-      onChange(publicUrl);
+      const data = await response.json();
+      onChange(data.url);
     } catch (err: any) {
       console.error(err);
       setError(err.message || 'An error occurred during upload');
