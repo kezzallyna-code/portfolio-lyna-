@@ -17,9 +17,13 @@ export default function SelectedProjects({ projects }: { projects: Project[] }) 
           {projects.map((project, index) => (
             <div key={project.id} className={styles.projectCard}>
               <div className={`${styles.imageContainer} ${index % 2 !== 0 ? styles.orderLast : ''}`}>
-                 <div className={styles.imagePlaceholder}>
-                   <span className={styles.placeholderText}>{project.title} Mockup</span>
-                 </div>
+                 {project.imageUrl ? (
+                   <img src={project.imageUrl} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                 ) : (
+                   <div className={styles.imagePlaceholder}>
+                     <span className={styles.placeholderText}>{project.title} Mockup</span>
+                   </div>
+                 )}
               </div>
               <div className={styles.contentContainer}>
                 <span className={styles.category}>{project.category}</span>

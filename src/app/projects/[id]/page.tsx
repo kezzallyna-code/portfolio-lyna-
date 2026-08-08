@@ -34,7 +34,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ id: 
       </div>
 
       <div style={{ width: '100%', height: '500px', background: 'rgba(0,0,0,0.2)', borderRadius: '24px', marginBottom: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--card-border)', overflow: 'hidden', position: 'relative' }}>
-         <span style={{ color: 'var(--text-secondary)' }}>Hero Image Placeholder</span>
+         {project.imageUrl ? (
+           <img src={project.imageUrl} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+         ) : (
+           <span style={{ color: 'var(--text-secondary)' }}>Hero Image Placeholder</span>
+         )}
       </div>
       
       <div style={{ maxWidth: '800px', margin: '0 auto', fontSize: '1.125rem', lineHeight: 1.8, color: 'var(--text-secondary)' }}>
@@ -82,8 +86,8 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ id: 
              <h2 style={{ color: '#fff', marginBottom: '1rem' }}>Gallery</h2>
              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                {project.gallery.map((img, i) => (
-                 <div key={i} style={{ width: '100%', paddingBottom: '75%', background: '#2c2c2c', borderRadius: '12px', position: 'relative' }}>
-                    <span style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: '#666' }}>Gallery Image</span>
+                 <div key={i} style={{ width: '100%', paddingBottom: '75%', background: '#2c2c2c', borderRadius: '12px', position: 'relative', overflow: 'hidden' }}>
+                    <img src={img} alt={`${project.title} Gallery Image ${i + 1}`} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                  </div>
                ))}
              </div>
