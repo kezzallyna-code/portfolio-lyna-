@@ -132,8 +132,229 @@ export async function getPortfolioData(): Promise<PortfolioData> {
 }
 
 export async function updatePortfolioData(data: Partial<PortfolioData>): Promise<void> {
-  // Update logic to be implemented depending on what part of data is being updated.
-  // We can leave this as a not implemented for now since the frontend typically reads from the DB.
-  // If the admin panel is actively writing, we'd need to implement upserts similar to our migration script.
-  console.warn("updatePortfolioData is deprecated. Use direct Supabase inserts/updates from the admin panel.");
+  const isUUID = (str: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
+
+  if (data.about) {
+    const { error } = await supabase.from('portfolio_about').update({
+      name: data.about.name,
+      role: data.about.role,
+      subtitle: data.about.subtitle,
+      description: data.about.description,
+      image_url: data.about.imageUrl,
+      location: data.about.location,
+      status: data.about.status
+    }).neq('id', '00000000-0000-0000-0000-000000000000');
+    if (error) throw new Error('Error updating about: ' + JSON.stringify(error));
+  }
+
+  if (data.superpowers?.skills) {
+    const skills = data.superpowers.skills;
+    
+    // Delete missing skills FIRST
+    const incomingIds = skills.map(s => s.id).filter(id => isUUID(id));
+    const { data: existing } = await supabase.from('portfolio_skills').select('id');
+    const idsToDelete = existing?.map(s => s.id).filter(id => !incomingIds.includes(id)) || [];
+    if (idsToDelete.length > 0) {
+      await supabase.from('portfolio_skills').delete().in('id', idsToDelete);
+    }
+
+    // Then upsert
+    const { error } = await supabase.from('portfolio_skills').upsert(skills.map(skill => {
+      const payload: any = {
+        title: skill.title,
+        description: skill.description,
+        icon: skill.icon,
+        category: skill.category,
+        order: skill.order
+      };
+      if (isUUID(skill.id)) {
+        payload.id = skill.id;
+      }
+      return payload;
+    }));
+    if (error) throw new Error('Error updating skills: ' + JSON.stringify(error));
+  }
+
+  if (data.superpowers?.software) {
+    const software = data.superpowers.software;
+    
+    // Delete first
+    const incomingNames = software.map(s => s.name);
+    const { data: existing } = await supabase.from('portfolio_software_tools').select('name');
+    const namesToDelete = existing?.map(s => s.name).filter(name => !incomingNames.includes(name)) || [];
+    if (namesToDelete.length > 0) {
+      await supabase.from('portfolio_software_tools').delete().in('name', namesToDelete);
+    }
+
+    // software tools use 'name' as unique identifier in our logic
+    const { error } = await supabase.from('portfolio_software_tools').upsert(software.map(tool => ({
+      name: tool.name,
+      icon: tool.icon
+    })));
+    if (error) throw new Error('Error updating software: ' + JSON.stringify(error));
+  }
+
+  if (data.projects) {
+    const projects = data.projects;
+    
+    // Delete first
+    const incomingIds = projects.map(p => p.id);
+    const { data: existing } = await supabase.from('portfolio_projects').select('id');
+    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
+    if (idsToDelete.length > 0) {
+      await supabase.from('portfolio_projects').delete().in('id', idsToDelete);
+    }
+
+    const { error } = await supabase.from('portfolio_projects').upsert(projects.map(proj => ({
+      id: proj.id,
+      title: proj.title,
+      category: proj.category,
+      description: proj.description,
+      image_url: proj.imageUrl || '',
+      case_study_url: proj.caseStudyUrl || '',
+      gallery: proj.gallery || [],
+      videos: proj.videos || [],
+      figma_embed: proj.figmaEmbed,
+      github_url: proj.githubUrl,
+      live_demo_url: proj.liveDemoUrl,
+      technologies: proj.technologies || [],
+      challenges: proj.challenges,
+      final_solution: proj.finalSolution,
+      is_featured: proj.isFeatured,
+      status: proj.status
+    })));
+    if (error) throw new Error('Error updating projects: ' + JSON.stringify(error));
+  }
+
+  if (data.experience) {
+    const experience = data.experience;
+    
+    // Delete first
+    const incomingIds = experience.map(p => p.id);
+    const { data: existing } = await supabase.from('portfolio_experiences').select('id');
+    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
+    if (idsToDelete.length > 0) {
+      await supabase.from('portfolio_experiences').delete().in('id', idsToDelete);
+    }
+
+    const { error } = await supabase.from('portfolio_experiences').upsert(experience.map(exp => ({
+      id: exp.id,
+      role: exp.role,
+      company: exp.company,
+      duration: exp.duration,
+      start_date: exp.startDate,
+      end_date: exp.endDate,
+      is_current: exp.isCurrent,
+      description: exp.description
+    })));
+    if (error) throw new Error('Error updating experience: ' + JSON.stringify(error));
+  }
+
+  if (data.certifications) {
+    const certifications = data.certifications;
+    
+    // Delete first
+    const incomingIds = certifications.map(p => p.id);
+    const { data: existing } = await supabase.from('portfolio_certifications').select('id');
+    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
+    if (idsToDelete.length > 0) {
+      await supabase.from('portfolio_certifications').delete().in('id', idsToDelete);
+    }
+
+    const { error } = await supabase.from('portfolio_certifications').upsert(certifications.map(cert => ({
+      id: cert.id,
+      title: cert.title,
+      organization: cert.organization,
+      date: cert.date,
+      status: cert.status,
+      image_url: cert.imageUrl,
+      pdf_url: cert.pdfUrl,
+      verification_url: cert.verificationUrl
+    })));
+    if (error) throw new Error('Error updating certifications: ' + JSON.stringify(error));
+  }
+
+  if (data.education) {
+    const education = data.education;
+    
+    // Delete first
+    const incomingIds = education.map(p => p.id);
+    const { data: existing } = await supabase.from('portfolio_education').select('id');
+    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
+    if (idsToDelete.length > 0) {
+      await supabase.from('portfolio_education').delete().in('id', idsToDelete);
+    }
+
+    const { error } = await supabase.from('portfolio_education').upsert(education.map(edu => ({
+      id: edu.id,
+      degree: edu.degree,
+      institution: edu.institution,
+      start_date: edu.startDate,
+      graduation_year: edu.graduationYear,
+      description: edu.description
+    })));
+    if (error) throw new Error('Error updating education: ' + JSON.stringify(error));
+  }
+
+  if (data.languages) {
+    const languages = data.languages;
+    
+    // Delete first
+    const incomingIds = languages.map(p => p.id);
+    const { data: existing } = await supabase.from('portfolio_languages').select('id');
+    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
+    if (idsToDelete.length > 0) {
+      await supabase.from('portfolio_languages').delete().in('id', idsToDelete);
+    }
+
+    const { error } = await supabase.from('portfolio_languages').upsert(languages.map(lang => ({
+      id: lang.id,
+      name: lang.name,
+      level: lang.level,
+      progress: lang.progress,
+      display_style: lang.displayStyle
+    })));
+    if (error) throw new Error('Error updating languages: ' + JSON.stringify(error));
+  }
+
+  if (data.uiUxVideos) {
+    const uiUxVideos = data.uiUxVideos;
+    
+    // Delete first
+    const incomingIds = uiUxVideos.map(p => p.id);
+    const { data: existing } = await supabase.from('portfolio_ui_ux_videos').select('id');
+    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
+    if (idsToDelete.length > 0) {
+      await supabase.from('portfolio_ui_ux_videos').delete().in('id', idsToDelete);
+    }
+
+    const { error } = await supabase.from('portfolio_ui_ux_videos').upsert(uiUxVideos.map(vid => ({
+      id: vid.id,
+      title: vid.title,
+      category: vid.category,
+      description: vid.description,
+      thumbnail: vid.thumbnail,
+      mp4_url: vid.mp4Url,
+      figma_embed: vid.figmaEmbed,
+      is_published: vid.isPublished
+    })));
+    if (error) throw new Error('Error updating videos: ' + JSON.stringify(error));
+  }
+
+  if (data.socials) {
+    const { error } = await supabase.from('portfolio_socials').update({
+      github: data.socials.github,
+      linkedin: data.socials.linkedin,
+      twitter: data.socials.twitter,
+      instagram: data.socials.instagram,
+      dribbble: data.socials.dribbble,
+      behance: data.socials.behance,
+      youtube: data.socials.youtube,
+      email: data.socials.email,
+      location: data.socials.location,
+      resume_url: data.socials.resumeUrl,
+      portfolio_url: data.socials.portfolioUrl
+    }).neq('id', '00000000-0000-0000-0000-000000000000');
+    if (error) throw new Error('Error updating socials: ' + JSON.stringify(error));
+  }
 }
