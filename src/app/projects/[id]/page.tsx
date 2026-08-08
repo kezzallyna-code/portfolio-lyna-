@@ -75,8 +75,15 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ id: 
         {project.figmaEmbed && (
           <div style={{ marginBottom: '4rem' }}>
              <h2 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>Figma Prototype</h2>
-             <div style={{ width: '100%', height: '450px', background: '#2c2c2c', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-               Figma Embed Placeholder
+             <div style={{ width: '100%', height: '450px', background: '#2c2c2c', borderRadius: '12px', overflow: 'hidden' }}>
+               <iframe
+                 title="Figma Prototype"
+                 width="100%"
+                 height="100%"
+                 src={project.figmaEmbed.includes('embed_host=') ? project.figmaEmbed : `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(project.figmaEmbed)}`}
+                 allowFullScreen
+                 style={{ border: 'none' }}
+               />
              </div>
           </div>
         )}
