@@ -1,9 +1,14 @@
 'use client';
 
-import { Bell, User } from 'lucide-react';
+import { Bell, User, LogOut } from 'lucide-react';
 import styles from './AdminHeader.module.css';
 
 export default function AdminHeader() {
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    window.location.href = '/admin/login';
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.left}>
@@ -21,6 +26,9 @@ export default function AdminHeader() {
           </div>
           <span className={styles.name}>Admin</span>
         </div>
+        <button onClick={handleLogout} className={styles.iconBtn} style={{ marginLeft: '1rem', color: '#ef4444' }} title="Logout">
+          <LogOut size={20} />
+        </button>
       </div>
     </header>
   );
