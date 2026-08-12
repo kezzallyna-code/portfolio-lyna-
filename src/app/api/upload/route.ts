@@ -29,7 +29,8 @@ export async function POST(request: NextRequest) {
 
     const validImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
     const validVideoTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
-    const isValid = validImageTypes.includes(file.type) || validVideoTypes.includes(file.type);
+    const validDocTypes = ['application/pdf'];
+    const isValid = validImageTypes.includes(file.type) || validVideoTypes.includes(file.type) || validDocTypes.includes(file.type);
 
     if (!isValid) {
       return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });

@@ -22,12 +22,14 @@ export function FileUpload({ label, value, onChange, accept, placeholder }: File
     // Validate file type
     const validImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
     const validVideoTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
+    const validDocTypes = ['application/pdf'];
     const isValid = accept === 'image/*' ? validImageTypes.includes(file.type) : 
                     accept === 'video/*' ? validVideoTypes.includes(file.type) :
-                    validImageTypes.includes(file.type) || validVideoTypes.includes(file.type);
+                    accept?.includes('.pdf') ? validImageTypes.includes(file.type) || validDocTypes.includes(file.type) :
+                    validImageTypes.includes(file.type) || validVideoTypes.includes(file.type) || validDocTypes.includes(file.type);
     
     if (!isValid) {
-      setError('Invalid file type. Only standard images and videos are allowed.');
+      setError('Invalid file type. Please upload a valid image, video, or PDF.');
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
