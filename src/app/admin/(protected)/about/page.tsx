@@ -26,14 +26,15 @@ export default function AboutEditor() {
     const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ about: data?.about }),
     });
     setSaving(false);
     if (res.ok) {
       alert('About information saved successfully!');
       window.location.reload();
     } else {
-      alert('Failed to save changes. Please try again.');
+      const errData = await res.json().catch(() => ({}));
+      alert('Failed to save: ' + (errData?.error || 'Unknown error'));
     }
   };
 

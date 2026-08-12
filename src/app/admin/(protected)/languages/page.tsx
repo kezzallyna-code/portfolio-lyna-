@@ -26,20 +26,21 @@ export default function LanguagesEditor() {
     const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ languages: data?.languages || [] }),
     });
     setSaving(false);
     if (res.ok) {
       alert('Languages saved successfully!');
       window.location.reload();
     } else {
-      alert('Failed to save changes. Please try again.');
+      const errData = await res.json().catch(() => ({}));
+      alert('Failed to save: ' + (errData?.error || 'Unknown error'));
     }
   };
 
   const addLanguage = () => {
     if (!data) return;
-    const newLang: Language = { id: Date.now().toString(), name: 'New Language', level: 'Beginner', progress: 50, displayStyle: 'bar' };
+    const newLang: Language = { id: crypto.randomUUID(), name: 'New Language', level: 'Beginner', progress: 50, displayStyle: 'bar' };
     setData({ ...data, languages: [...data.languages, newLang] });
   };
 

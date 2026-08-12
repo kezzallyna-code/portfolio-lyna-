@@ -24,23 +24,29 @@ export default function CertificationsEditor() {
 
   const handleSave = async () => {
     setSaving(true);
+    // Only send certifications — never the full portfolio object.
+    // Sending the full object risks deleting projects/experience if the
+    // browser state is stale or contains any non-UUID temp IDs.
     const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ certifications: data?.certifications || [] }),
     });
     setSaving(false);
     if (res.ok) {
       alert('Certifications saved successfully!');
       window.location.reload();
     } else {
-      alert('Failed to save changes. Please try again.');
+      const errData = await res.json().catch(() => ({}));
+      alert('Failed to save: ' + (errData?.error || 'Unknown error'));
     }
   };
 
   const addCert = () => {
     if (!data) return;
-    const newCert: Certification = { id: Date.now().toString(), title: 'New Certification', organization: 'Organization', date: '2026', verificationUrl: '', status: 'completed' };
+    // Use crypto.randomUUID() to generate a real UUID so the DB's NOT NULL
+    // constraint is satisfied and isUUID() validation in repository.ts passes.
+    const newCert: Certification = { id: crypto.randomUUID(), title: 'New Certification', organization: 'Organization', date: '2026', verificationUrl: '', status: 'completed' };
     setData({ ...data, certifications: [...(data.certifications || []), newCert] });
   };
 

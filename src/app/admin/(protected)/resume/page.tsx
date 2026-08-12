@@ -26,14 +26,15 @@ export default function ResumeEditor() {
     const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ socials: data?.socials }),
     });
     setSaving(false);
     if (res.ok) {
       alert('Resume settings saved successfully!');
       window.location.reload();
     } else {
-      alert('Failed to save changes. Please try again.');
+      const errData = await res.json().catch(() => ({}));
+      alert('Failed to save: ' + (errData?.error || 'Unknown error'));
     }
   };
 

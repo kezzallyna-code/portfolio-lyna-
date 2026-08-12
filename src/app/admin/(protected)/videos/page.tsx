@@ -32,21 +32,22 @@ export default function VideosEditor() {
     const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ uiUxVideos: data?.uiUxVideos || [] }),
     });
     setSaving(false);
     if (res.ok) {
       alert('Videos saved successfully!');
       window.location.reload();
     } else {
-      alert('Failed to save changes. Please try again.');
+      const errData = await res.json().catch(() => ({}));
+      alert('Failed to save: ' + (errData?.error || 'Unknown error'));
     }
   };
 
   const addVideo = () => {
     if (!data) return;
     const newVideo: UiUxVideo = { 
-      id: Date.now().toString(), 
+      id: crypto.randomUUID(), 
       title: 'New Video', 
       category: 'UI/UX',
       description: '',
