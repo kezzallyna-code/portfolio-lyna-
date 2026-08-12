@@ -194,31 +194,34 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
     const projects = data.projects;
     
     // Delete first
-    const incomingIds = projects.map(p => p.id);
+    const incomingIds = projects.map(p => p.id).filter(id => isUUID(id));
     const { data: existing } = await supabaseAdmin.from('portfolio_projects').select('id');
     const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
     if (idsToDelete.length > 0) {
       await supabaseAdmin.from('portfolio_projects').delete().in('id', idsToDelete);
     }
 
-    const { error } = await supabaseAdmin.from('portfolio_projects').upsert(projects.map(proj => ({
-      id: proj.id,
-      title: proj.title,
-      category: proj.category,
-      description: proj.description,
-      image_url: proj.imageUrl || '',
-      case_study_url: proj.caseStudyUrl || '',
-      gallery: proj.gallery || [],
-      videos: proj.videos || [],
-      figma_embed: proj.figmaEmbed,
-      github_url: proj.githubUrl,
-      live_demo_url: proj.liveDemoUrl,
-      technologies: proj.technologies || [],
-      challenges: proj.challenges,
-      final_solution: proj.finalSolution,
-      is_featured: proj.isFeatured,
-      status: proj.status
-    })));
+    const { error } = await supabaseAdmin.from('portfolio_projects').upsert(projects.map(proj => {
+      const payload: any = {
+        title: proj.title,
+        category: proj.category,
+        description: proj.description,
+        image_url: proj.imageUrl || '',
+        case_study_url: proj.caseStudyUrl || '',
+        gallery: proj.gallery || [],
+        videos: proj.videos || [],
+        figma_embed: proj.figmaEmbed,
+        github_url: proj.githubUrl,
+        live_demo_url: proj.liveDemoUrl,
+        technologies: proj.technologies || [],
+        challenges: proj.challenges,
+        final_solution: proj.finalSolution,
+        is_featured: proj.isFeatured,
+        status: proj.status
+      };
+      if (isUUID(proj.id)) payload.id = proj.id;
+      return payload;
+    }));
     if (error) throw new Error('Error updating projects: ' + JSON.stringify(error));
   }
 
@@ -226,23 +229,26 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
     const experience = data.experience;
     
     // Delete first
-    const incomingIds = experience.map(p => p.id);
+    const incomingIds = experience.map(p => p.id).filter(id => isUUID(id));
     const { data: existing } = await supabaseAdmin.from('portfolio_experiences').select('id');
     const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
     if (idsToDelete.length > 0) {
       await supabaseAdmin.from('portfolio_experiences').delete().in('id', idsToDelete);
     }
 
-    const { error } = await supabaseAdmin.from('portfolio_experiences').upsert(experience.map(exp => ({
-      id: exp.id,
-      role: exp.role,
-      company: exp.company,
-      duration: exp.duration,
-      start_date: exp.startDate,
-      end_date: exp.endDate,
-      is_current: exp.isCurrent,
-      description: exp.description
-    })));
+    const { error } = await supabaseAdmin.from('portfolio_experiences').upsert(experience.map(exp => {
+      const payload: any = {
+        role: exp.role,
+        company: exp.company,
+        duration: exp.duration,
+        start_date: exp.startDate,
+        end_date: exp.endDate,
+        is_current: exp.isCurrent,
+        description: exp.description
+      };
+      if (isUUID(exp.id)) payload.id = exp.id;
+      return payload;
+    }));
     if (error) throw new Error('Error updating experience: ' + JSON.stringify(error));
   }
 
@@ -250,23 +256,26 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
     const certifications = data.certifications;
     
     // Delete first
-    const incomingIds = certifications.map(p => p.id);
+    const incomingIds = certifications.map(p => p.id).filter(id => isUUID(id));
     const { data: existing } = await supabaseAdmin.from('portfolio_certifications').select('id');
     const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
     if (idsToDelete.length > 0) {
       await supabaseAdmin.from('portfolio_certifications').delete().in('id', idsToDelete);
     }
 
-    const { error } = await supabaseAdmin.from('portfolio_certifications').upsert(certifications.map(cert => ({
-      id: cert.id,
-      title: cert.title,
-      organization: cert.organization,
-      date: cert.date,
-      status: cert.status,
-      image_url: cert.imageUrl,
-      pdf_url: cert.pdfUrl,
-      verification_url: cert.verificationUrl
-    })));
+    const { error } = await supabaseAdmin.from('portfolio_certifications').upsert(certifications.map(cert => {
+      const payload: any = {
+        title: cert.title,
+        organization: cert.organization,
+        date: cert.date,
+        status: cert.status,
+        image_url: cert.imageUrl,
+        pdf_url: cert.pdfUrl,
+        verification_url: cert.verificationUrl
+      };
+      if (isUUID(cert.id)) payload.id = cert.id;
+      return payload;
+    }));
     if (error) throw new Error('Error updating certifications: ' + JSON.stringify(error));
   }
 
@@ -274,21 +283,24 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
     const education = data.education;
     
     // Delete first
-    const incomingIds = education.map(p => p.id);
+    const incomingIds = education.map(p => p.id).filter(id => isUUID(id));
     const { data: existing } = await supabaseAdmin.from('portfolio_education').select('id');
     const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
     if (idsToDelete.length > 0) {
       await supabaseAdmin.from('portfolio_education').delete().in('id', idsToDelete);
     }
 
-    const { error } = await supabaseAdmin.from('portfolio_education').upsert(education.map(edu => ({
-      id: edu.id,
-      degree: edu.degree,
-      institution: edu.institution,
-      start_date: edu.startDate,
-      graduation_year: edu.graduationYear,
-      description: edu.description
-    })));
+    const { error } = await supabaseAdmin.from('portfolio_education').upsert(education.map(edu => {
+      const payload: any = {
+        degree: edu.degree,
+        institution: edu.institution,
+        start_date: edu.startDate,
+        graduation_year: edu.graduationYear,
+        description: edu.description
+      };
+      if (isUUID(edu.id)) payload.id = edu.id;
+      return payload;
+    }));
     if (error) throw new Error('Error updating education: ' + JSON.stringify(error));
   }
 
@@ -296,20 +308,23 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
     const languages = data.languages;
     
     // Delete first
-    const incomingIds = languages.map(p => p.id);
+    const incomingIds = languages.map(p => p.id).filter(id => isUUID(id));
     const { data: existing } = await supabaseAdmin.from('portfolio_languages').select('id');
     const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
     if (idsToDelete.length > 0) {
       await supabaseAdmin.from('portfolio_languages').delete().in('id', idsToDelete);
     }
 
-    const { error } = await supabaseAdmin.from('portfolio_languages').upsert(languages.map(lang => ({
-      id: lang.id,
-      name: lang.name,
-      level: lang.level,
-      progress: lang.progress,
-      display_style: lang.displayStyle
-    })));
+    const { error } = await supabaseAdmin.from('portfolio_languages').upsert(languages.map(lang => {
+      const payload: any = {
+        name: lang.name,
+        level: lang.level,
+        progress: lang.progress,
+        display_style: lang.displayStyle
+      };
+      if (isUUID(lang.id)) payload.id = lang.id;
+      return payload;
+    }));
     if (error) throw new Error('Error updating languages: ' + JSON.stringify(error));
   }
 
@@ -317,23 +332,26 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
     const uiUxVideos = data.uiUxVideos;
     
     // Delete first
-    const incomingIds = uiUxVideos.map(p => p.id);
+    const incomingIds = uiUxVideos.map(p => p.id).filter(id => isUUID(id));
     const { data: existing } = await supabaseAdmin.from('portfolio_ui_ux_videos').select('id');
     const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
     if (idsToDelete.length > 0) {
       await supabaseAdmin.from('portfolio_ui_ux_videos').delete().in('id', idsToDelete);
     }
 
-    const { error } = await supabaseAdmin.from('portfolio_ui_ux_videos').upsert(uiUxVideos.map(vid => ({
-      id: vid.id,
-      title: vid.title,
-      category: vid.category,
-      description: vid.description,
-      thumbnail: vid.thumbnail,
-      mp4_url: vid.mp4Url,
-      figma_embed: vid.figmaEmbed,
-      is_published: vid.isPublished
-    })));
+    const { error } = await supabaseAdmin.from('portfolio_ui_ux_videos').upsert(uiUxVideos.map(vid => {
+      const payload: any = {
+        title: vid.title,
+        category: vid.category,
+        description: vid.description,
+        thumbnail: vid.thumbnail,
+        mp4_url: vid.mp4Url,
+        figma_embed: vid.figmaEmbed,
+        is_published: vid.isPublished
+      };
+      if (isUUID(vid.id)) payload.id = vid.id;
+      return payload;
+    }));
     if (error) throw new Error('Error updating videos: ' + JSON.stringify(error));
   }
 
