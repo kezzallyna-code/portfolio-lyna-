@@ -4,10 +4,9 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const rawKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
 
-if (rawKey && /\s/.test(rawKey)) {
-  throw new Error('Invalid SUPABASE_SERVICE_ROLE_KEY configuration: multiple credentials or spaces detected. Please ensure exactly one key is configured.');
-}
-const supabaseServiceRoleKey = rawKey;
+// Automatically extract the first valid JWT to handle malformed Vercel environment variables
+const matchKey = rawKey.match(/(eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)/);
+const supabaseServiceRoleKey = matchKey ? matchKey[0] : rawKey;
 
 export const supabaseAdmin = createClient(supabaseUrl || 'https://dummy.supabase.co', supabaseServiceRoleKey || 'dummy', {
   auth: {
