@@ -27,21 +27,20 @@ export default function SkillsEditor() {
     const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ superpowers: data?.superpowers }),
+      body: JSON.stringify(data),
     });
     setSaving(false);
     if (res.ok) {
       alert('Skills saved successfully!');
       window.location.reload();
     } else {
-      const errData = await res.json().catch(() => ({}));
-      alert('Failed to save: ' + (errData?.error || 'Unknown error'));
+      alert('Failed to save changes. Please try again.');
     }
   };
 
   const addSkill = () => {
     if (!data) return;
-    const newSkill: Skill = { id: crypto.randomUUID(), title: 'New Skill', description: '', icon: 'star', category: '', order: 0 };
+    const newSkill: Skill = { id: Date.now().toString(), title: 'New Skill', description: '', icon: 'star', category: '', order: 0 };
     setData({ ...data, superpowers: { ...data.superpowers, skills: [...data.superpowers.skills, newSkill] } });
   };
 

@@ -27,21 +27,20 @@ export default function EducationEditor() {
     const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ education: data?.education || [] }),
+      body: JSON.stringify(data),
     });
     setSaving(false);
     if (res.ok) {
       alert('Education saved successfully!');
       window.location.reload();
     } else {
-      const errData = await res.json().catch(() => ({}));
-      alert('Failed to save: ' + (errData?.error || 'Unknown error'));
+      alert('Failed to save changes. Please try again.');
     }
   };
 
   const addEducation = () => {
     if (!data) return;
-    const newEdu: Education = { id: crypto.randomUUID(), degree: 'New Degree', institution: 'New Institution', graduationYear: '2026', description: '' };
+    const newEdu: Education = { id: Date.now().toString(), degree: 'New Degree', institution: 'New Institution', graduationYear: '2026', description: '' };
     setData({ ...data, education: [newEdu, ...data.education] });
   };
 

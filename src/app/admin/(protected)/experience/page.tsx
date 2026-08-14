@@ -27,21 +27,20 @@ export default function ExperienceEditor() {
     const res = await fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ experience: data?.experience || [] }),
+      body: JSON.stringify(data),
     });
     setSaving(false);
     if (res.ok) {
       alert('Experience saved successfully!');
       window.location.reload();
     } else {
-      const errData = await res.json().catch(() => ({}));
-      alert('Failed to save: ' + (errData?.error || 'Unknown error'));
+      alert('Failed to save changes. Please try again.');
     }
   };
 
   const addExperience = () => {
     if (!data) return;
-    const newExp: Experience = { id: crypto.randomUUID(), role: 'New Role', company: 'New Company', duration: '2026 - Present', description: '' };
+    const newExp: Experience = { id: Date.now().toString(), role: 'New Role', company: 'New Company', duration: '2026 - Present', description: '' };
     setData({ ...data, experience: [newExp, ...data.experience] });
   };
 
