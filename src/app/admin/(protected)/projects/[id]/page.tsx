@@ -71,7 +71,8 @@ export default function ProjectEditor() {
       window.location.reload();
       if (isNew) router.push(`/admin/projects/${project.id}`);
     } else {
-      alert('Failed to save project. Please try again.');
+      const err = await res.json();
+      alert(`Failed to save project. Error: ${err.message || err.error}`);
     }
   };
 

@@ -40,14 +40,14 @@ export async function POST(request: Request) {
     const result = updateSchema.safeParse(body);
 
     if (!result.success) {
-      return NextResponse.json({ error: 'Invalid payload format' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid payload format', details: result.error }, { status: 400 });
     }
 
     // 3. Perform update
     await updatePortfolioData(result.data as any);
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
     console.error('POST Error in portfolio route:', error);
-    return NextResponse.json({ error: 'Failed to update portfolio data' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to update portfolio data', message: error.message }, { status: 500 });
   }
 }
