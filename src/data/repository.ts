@@ -150,16 +150,6 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
 
   if (data.superpowers?.skills) {
     const skills = data.superpowers.skills;
-    
-    // Delete missing skills FIRST
-    const incomingIds = skills.map(s => s.id);
-    const { data: existing } = await supabaseAdmin.from('portfolio_skills').select('id');
-    const idsToDelete = existing?.map(s => s.id).filter(id => !incomingIds.includes(id)) || [];
-    if (idsToDelete.length > 0) {
-      await supabaseAdmin.from('portfolio_skills').delete().in('id', idsToDelete);
-    }
-
-    // Then upsert
     const { error } = await supabaseAdmin.from('portfolio_skills').upsert(skills.map(skill => {
       const payload: any = {
         id: skill.id,
@@ -176,11 +166,7 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
 
   if (data.superpowers?.software) {
     const software = data.superpowers.software;
-    
-    // Delete all existing software tools first to avoid duplicates
     await supabaseAdmin.from('portfolio_software_tools').delete().neq('name', 'non_existent_dummy');
-
-    // Insert the updated tools
     const { error } = await supabaseAdmin.from('portfolio_software_tools').insert(software.map(tool => ({
       name: tool.name,
       icon: tool.icon
@@ -190,15 +176,6 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
 
   if (data.projects) {
     const projects = data.projects;
-    
-    // Delete first
-    const incomingIds = projects.map(p => p.id);
-    const { data: existing } = await supabaseAdmin.from('portfolio_projects').select('id');
-    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
-    if (idsToDelete.length > 0) {
-      await supabaseAdmin.from('portfolio_projects').delete().in('id', idsToDelete);
-    }
-
     const { error } = await supabaseAdmin.from('portfolio_projects').upsert(projects.map(proj => ({
       id: proj.id,
       title: proj.title,
@@ -222,15 +199,6 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
 
   if (data.experience) {
     const experience = data.experience;
-    
-    // Delete first
-    const incomingIds = experience.map(p => p.id);
-    const { data: existing } = await supabaseAdmin.from('portfolio_experiences').select('id');
-    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
-    if (idsToDelete.length > 0) {
-      await supabaseAdmin.from('portfolio_experiences').delete().in('id', idsToDelete);
-    }
-
     const { error } = await supabaseAdmin.from('portfolio_experiences').upsert(experience.map(exp => ({
       id: exp.id,
       role: exp.role,
@@ -246,15 +214,6 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
 
   if (data.certifications) {
     const certifications = data.certifications;
-    
-    // Delete first
-    const incomingIds = certifications.map(p => p.id);
-    const { data: existing } = await supabaseAdmin.from('portfolio_certifications').select('id');
-    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
-    if (idsToDelete.length > 0) {
-      await supabaseAdmin.from('portfolio_certifications').delete().in('id', idsToDelete);
-    }
-
     const { error } = await supabaseAdmin.from('portfolio_certifications').upsert(certifications.map(cert => ({
       id: cert.id,
       title: cert.title,
@@ -270,15 +229,6 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
 
   if (data.education) {
     const education = data.education;
-    
-    // Delete first
-    const incomingIds = education.map(p => p.id);
-    const { data: existing } = await supabaseAdmin.from('portfolio_education').select('id');
-    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
-    if (idsToDelete.length > 0) {
-      await supabaseAdmin.from('portfolio_education').delete().in('id', idsToDelete);
-    }
-
     const { error } = await supabaseAdmin.from('portfolio_education').upsert(education.map(edu => ({
       id: edu.id,
       degree: edu.degree,
@@ -292,15 +242,6 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
 
   if (data.languages) {
     const languages = data.languages;
-    
-    // Delete first
-    const incomingIds = languages.map(p => p.id);
-    const { data: existing } = await supabaseAdmin.from('portfolio_languages').select('id');
-    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
-    if (idsToDelete.length > 0) {
-      await supabaseAdmin.from('portfolio_languages').delete().in('id', idsToDelete);
-    }
-
     const { error } = await supabaseAdmin.from('portfolio_languages').upsert(languages.map(lang => ({
       id: lang.id,
       name: lang.name,
@@ -313,15 +254,6 @@ export async function updatePortfolioData(data: Partial<PortfolioData>): Promise
 
   if (data.uiUxVideos) {
     const uiUxVideos = data.uiUxVideos;
-    
-    // Delete first
-    const incomingIds = uiUxVideos.map(p => p.id);
-    const { data: existing } = await supabaseAdmin.from('portfolio_ui_ux_videos').select('id');
-    const idsToDelete = existing?.map(e => e.id).filter(id => !incomingIds.includes(id)) || [];
-    if (idsToDelete.length > 0) {
-      await supabaseAdmin.from('portfolio_ui_ux_videos').delete().in('id', idsToDelete);
-    }
-
     const { error } = await supabaseAdmin.from('portfolio_ui_ux_videos').upsert(uiUxVideos.map(vid => ({
       id: vid.id,
       title: vid.title,
