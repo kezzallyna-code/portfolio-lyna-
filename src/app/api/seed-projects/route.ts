@@ -111,8 +111,8 @@ export async function GET() {
       description: "Working on the design and development of modern websites and digital solutions for clients. Building responsive web interfaces, integrating AI-powered features, creating portfolio/business websites, and collaborating on client projects from concept to deployment."
     };
 
-    const { error: pError } = await supabaseAdmin.from('portfolio_projects').insert(newProjects);
-    const { error: eError } = await supabaseAdmin.from('portfolio_experiences').insert([newExperience]);
+    const { error: pError } = await supabaseAdmin.from('portfolio_projects').upsert(newProjects);
+    const { error: eError } = await supabaseAdmin.from('portfolio_experiences').upsert([newExperience]);
 
     if (pError || eError) {
       return NextResponse.json({ success: false, error: pError?.message || eError?.message }, { status: 500 });
